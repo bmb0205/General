@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 /**
  * Created by bmb0205 on 5/22/16.
+ * Bubble sort algorithm implemented in Java.
+ * Worst and average case time efficiency: O(n^2)
+ * Best case time efficiency: O(n).
+ * Space complexity: constant O(1)
+ * Algorithm compares adjacent elements and switches if e2 > e1
  */
 public class BubbleSort {
 
@@ -16,9 +21,8 @@ public class BubbleSort {
                     myArray[b] = tempInt;
                 }
             }
-//            System.out.println(Arrays.toString(myArray));
+//            System.out.println(Arrays.toString(myArray)); // print result of each iteration
         }
-        System.out.println("done");
         return myArray;
     }
 }
