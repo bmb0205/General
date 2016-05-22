@@ -4,12 +4,14 @@ import java.util.Arrays;
 
 /**
  * Created by bmb0205 on 5/22/16.
- * Binary search algorithm implementation in Java
+ * Binary search algorithm implementation in Java.
+ * The binary search algorithm must be used on a sorted array and runs worst case
+ * O(log(n)) time and constant O(1) space.
+ * The searched array is reduced in half until the searched number is found and
+ * the array, searched number, and element index are all displayed.
  */
 public class BinarySearch {
-    
 
-    // accepts array and int arguments and performs a binary search on number and array specified
     public static boolean searchForNumber(Integer[] myArray, int myNumber) {
         if (myArray.length == 0) {
             return false;
@@ -18,7 +20,6 @@ public class BinarySearch {
         int firstNumber = 0;
         int lastNumber = myArray.length - 1;
 
-        //  binary search
         while (firstNumber <= lastNumber) {
             int middleNumber = (firstNumber + lastNumber) / 2;
             if (myNumber > myArray[middleNumber]) {
