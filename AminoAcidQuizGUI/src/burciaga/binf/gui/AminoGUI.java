@@ -56,13 +56,21 @@ public class AminoGUI extends JPanel {
 	private static GridBagConstraints gbc = new GridBagConstraints();
 	private static final String[] times = {"Select your timelimit! (in seconds)", 
 										   "10", "20", "30", "40", "50", "60"};
+	private static Timer timer;
+	private static AminoQuiz quiz = new AminoQuiz();
+	private static JComboBox<String> timeBox = new JComboBox<>(times);
+	private static HashMap<String, Integer> map = new HashMap<>();
 
-	public static Timer timer;
-	public static AminoQuiz quiz = new AminoQuiz();
-	public static JComboBox<String> timeBox = new JComboBox<String>(times);
-	public static HashMap<String, Integer> map = new HashMap<String, Integer>();
-	
-	public void Color(int r, int g, int b, float a){}
+	/*
+ 	*  Creates new timer using user selected seconds.
+ 	*  Calls CancelSummary() when timer is done and ends quiz.
+ 	*/
+	public AminoGUI(int numSeconds) {
+		timer = new Timer();
+		timer.schedule(new CancelSummary(), numSeconds *1000);
+	}
+
+//	public void Color(int r, int g, int b, float a){}
 
 	// Sets background image, overrides paintComponent()
 	private static JTextField dnaField = new JTextField() {
@@ -79,20 +87,11 @@ public class AminoGUI extends JPanel {
 		}
 	};
 	
-	/*
-	 *  Creates new timer using user selected seconds.
-	 *  Calls CancelSummary() when timer is done and ends quiz.
-	 */
-	public AminoGUI(int numSeconds) {
-		timer = new Timer();
-		timer.schedule(new CancelSummary(), numSeconds *1000);
-	}
-	
-	class CancelSummary extends TimerTask {
+	private class CancelSummary extends TimerTask {
 		@Override
 		public void run() {
 			timer.cancel();
-			summary(count, timeBox, map);
+			summary(count, map);
 			count = 0;
 		}
 	}
@@ -103,8 +102,8 @@ public class AminoGUI extends JPanel {
 	 *  Overrides actionPerformed().
 	 *  Adds new functional buttons to bottom panel.
 	 */
-	protected static void makeButton(String buttonName, GridBagLayout gbl, GridBagConstraints gbc, 
-	                                 final JComboBox<String> timeBox) {
+	private static void makeButton(String buttonName, GridBagLayout gbl, GridBagConstraints gbc,
+								   final JComboBox<String> timeBox) {
 		JButton newButton = new JButton(buttonName);
 		newButton.setPreferredSize(new Dimension(250, 40));
 		newButton.setForeground(Color.BLACK);
@@ -114,7 +113,7 @@ public class AminoGUI extends JPanel {
 		
 		
 		// !!! change this, pass in actionlistener to makeButton to avoid using 'if buttonName =='
-		if (buttonName == "Start the quiz!") {
+		if (buttonName.equals("Start the quiz!")) {
 			newButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -126,14 +125,14 @@ public class AminoGUI extends JPanel {
 				}
 			});
 		}
-		else if (buttonName == "Want to give up?") {
+		else if (buttonName.equals("Want to give up?")) {
 			newButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					timer.cancel();
 					inputField.setText("Enter one letter answer here...");
 					questionField.setText("Are you ready?");
-					summary(count, timeBox, map);
+					summary(count, map);
 					count = 0;
 				}
 			});
@@ -146,18 +145,28 @@ public class AminoGUI extends JPanel {
 	 *  Shows amino acid name and number of correct answer, along with AA answered incorrectly.
 	 *  Includes two option buttons, to give up (closes quiz) or try again (refreshed and restarts quiz).
 	 */
-	public static void summary(int count, JComboBox<String> timeBox, HashMap<String, Integer> map) {
+	private static void summary(int count, HashMap<String, Integer> map) {
 		Object[] buttons = {"Try again!", "Give up?"};
 		StringBuilder builder = new StringBuilder();
 		for ( Map.Entry<String, Integer> entry : map.entrySet()) {
-			builder.append(entry.getKey() + " : " + entry.getValue() + "/" + entry.getValue());
+			builder.append(entry.getKey())
+					.append(" : ")
+					.append(entry.getValue())
+					.append("/")
+					.append(entry.getValue());
 			builder.append("\n");
 		}
 		String tempFail = questionField.getText();
 		String failedOn = tempFail.substring(0, tempFail.length() - 4);
-		String message = ("You got " + count + " correct!\n\t" + "Here is the breakdown: \n\n" + builder + 
-				          "You failed on: " + failedOn + "\n\nKeep studying!" );
-		int num = JOptionPane.showOptionDialog(null, message, "Game over! Score Summary", JOptionPane.YES_NO_OPTION, 
+		StringBuilder message = new StringBuilder().append("You got ")
+				.append(count)
+				.append(" correct!\n\t")
+				.append("Here is the breakdown: \n\n")
+				.append(builder)
+				.append("You failed on: ")
+				.append(failedOn)
+				.append("\n\nKeep studying!");
+		int num = JOptionPane.showOptionDialog(null, message.toString(), "Game over! Score Summary", JOptionPane.YES_NO_OPTION,
 				  JOptionPane.QUESTION_MESSAGE, dnaIcon, buttons, buttons[0]);
 		
 		if (num == JOptionPane.YES_OPTION) {	
@@ -190,7 +199,7 @@ public class AminoGUI extends JPanel {
 				String temp = questionField.getText();
 				String question = temp.substring(0, temp.length() -4);
 				Boolean check = quiz.checkAnswer(question, answer);
-				if (check == true) {
+				if (check) {
 					quiz.setCount(question, map);
 					count++;
 					String nextQuestion = quiz.newQuestion();
@@ -199,7 +208,7 @@ public class AminoGUI extends JPanel {
 				}
 				else {
 					timer.cancel();
-					summary(count, timeBox, map);
+					summary(count, map);
 					count = 0;
 				}
 			}

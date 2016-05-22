@@ -13,14 +13,14 @@ import java.util.Arrays;
 public class AminoQuiz {
 	
 	// One letter amino acid abbreviations
-	public static String[] SHORT_NAMES = {
+	private static String[] SHORT_NAMES = {
 			"A","R", "N", "D", "C", "Q", "E",
 			"G", "H", "I", "L", "K", "M", "F", "P",
 			"S", "T", "W", "Y", "V"
 		};
 	
 	// Full name amino acids
-	public static String[] FULL_NAMES = { 
+	private static String[] FULL_NAMES = {
 		"alanine","arginine", "asparagine",
 		"aspartic acid", "cysteine",
 		"glutamine", "glutamic acid",
@@ -32,7 +32,7 @@ public class AminoQuiz {
 	};	
 	
 	// used for counting correct answers
-	static int count = 0;
+	private static int count = 0;
 
 	// Counts the number of times a question is answered correctly by
 	// using a counter and a hashmap of name to count
@@ -66,17 +66,6 @@ public class AminoQuiz {
 		Random random_generator = new Random();
 		int random_num = random_generator.nextInt(20);	
 		String one_amino = (FULL_NAMES[random_num]);
-		String question = (one_amino + "...?");
-		return question;
-	}
-	
-	// Runs countdown for the quiz at time selected
-	public void runTimer(Timer countdown, int seconds) {
-		int milis = seconds * 1000;
-		countdown.schedule(new TimerTask() {
-			public void run() {
-				System.out.println("done");
-			}
-		}, milis);
+		return (one_amino + "...?");
 	}
 }
