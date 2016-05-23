@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public class BinarySearch {
 
-    public static boolean searchForNumber(Integer[] myArray, int myNumber) {
+    public static boolean binarySearch(Integer[] myArray, int myNumber) {
         if (myArray.length == 0) {
             return false;
         }

@@ -1,5 +1,6 @@
-package burciaga.projects.algorithms;
+package burciaga.projects.algorithms.tests;
 
+import burciaga.projects.algorithms.BinarySearch;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -14,11 +15,11 @@ import static org.junit.Assert.assertTrue;
 public class BinarySearchTest {
 
     @Test
-    public void testSearchForNumber() {
+    public void testbinarySearch() {
         Integer[] myArray = {1, 2, 5, 6, 7, 8, 10, 13, 14};
-        assertTrue(BinarySearch.searchForNumber(myArray, 2));
-        assertTrue(BinarySearch.searchForNumber(myArray, 8));
-        assertTrue(BinarySearch.searchForNumber(myArray, 14));
-        assertFalse(BinarySearch.searchForNumber(myArray, 3));
+        assertTrue(BinarySearch.binarySearch(myArray, 2));
+        assertTrue(BinarySearch.binarySearch(myArray, 8));
+        assertTrue(BinarySearch.binarySearch(myArray, 14));
+        assertFalse(BinarySearch.binarySearch(myArray, 3));
     }
 }

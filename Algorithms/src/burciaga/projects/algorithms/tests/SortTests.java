@@ -1,5 +1,6 @@
-package burciaga.projects.algorithms;
+package burciaga.projects.algorithms.tests;
 
+import burciaga.projects.algorithms.BubbleSort;
 import org.junit.Test;
 
 import java.util.Arrays;
