@@ -1,4 +1,4 @@
-## JavaEamples
+## JavaExamples
 
 Contains various assignments written in Java, including sorting and searching algorithm implementatons along with JUnit testing, an Amino Acid Quiz Graphical User Interface, and various FASTA file parsers.
 
